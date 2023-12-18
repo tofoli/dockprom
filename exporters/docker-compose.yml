@@ -2,6 +2,17 @@ version: '2.1'
 
 services:
 
+  portainer_agent:
+    image: portainer/agent:2.18.3
+    container_name: portainer_agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    restart: unless-stopped
+    network_mode: host
+    labels:
+      org.label-schema.group: "monitoring exporter"
+
   nodeexporter:
     image: prom/node-exporter:v1.6.0
     container_name: nodeexporter
@@ -17,7 +28,7 @@ services:
     restart: unless-stopped
     network_mode: host
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: "monitoring exporter"
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.1
@@ -34,7 +45,7 @@ services:
     restart: unless-stopped
     network_mode: host
     labels:
-      org.label-schema.group: "monitoring"  
+      org.label-schema.group: "monitoring exporter"
 
   promtail:
     image: grafana/promtail:2.9.0
@@ -46,5 +57,5 @@ services:
     restart: unless-stopped
     network_mode: host
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: "monitoring exporter"
 
